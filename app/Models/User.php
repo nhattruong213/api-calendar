@@ -25,6 +25,10 @@ class User extends Authenticatable implements JWTSubject
         'password',
     ];
 
+    public function tasks(){
+        return $this->hasMany(related: Task::class, foreignKey: 'user_id', localKey:'id');
+    }
+
     /**
      * The attributes that should be hidden for serialization.
      *

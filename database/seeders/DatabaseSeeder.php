@@ -15,47 +15,25 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        \App\Models\User::factory(10)->create();
-        DB::table('dates')->insert([ 
-            [
-                'date' => 'Fri Apr 15 2022'
-            ],
-            [   
-                'date' => 'Tue Apr 19 2022'
-            ],
-        ]);
-        DB::table('contents')->insert([ 
-            [
-                'date_id' => 1,
-                'content' => 'Đá bóng'
-            ],
-            [   
-                'date_id' => 1,
-                'date' => 'Xem phim'
-            ],
-            [
-                'date_id' => 2,
-                'content' => 'Đá bóng'
-            ],
-            [   
-                'date_id' => 2,
-                'date' => 'Xem phim'
-            ],
-        ]);
+        // \App\Models\User::factory(10)->create();
         DB::table('tasks')->insert([ 
             [
+                'user_id' => 1,
                 'content' => 'Đá bóng',
                 'date' => 'Fri Apr 15 2022'
             ],
             [   
+                'user_id' => 1,
                 'content' => 'Xem phim',
                 'date' => 'Fri Apr 15 2022'
             ],
             [
+                'user_id' => 1,
                 'content' => 'Đá bóng',
                 'date' => 'Tue Apr 19 2022'
             ],
-            [   
+            [ 
+                'user_id' => 1,  
                 'content' => 'Xem phim',
                 'date' => 'Tue Apr 19 2022'
             ],

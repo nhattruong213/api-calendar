@@ -15,10 +15,12 @@ return new class extends Migration
     {
         Schema::create('tasks', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('content');
             $table->string('date');
             $table->string('img')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

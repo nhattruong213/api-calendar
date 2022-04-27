@@ -7,6 +7,7 @@ use App\Http\Requests\CalendarAddRequest;
 use App\Http\Requests\CalendarEditRequest;
 use App\Models\Task;
 use App\Repositories\Task\TaskRepository;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -32,25 +33,28 @@ class CalendarController extends Controller
    
     public function store(CalendarAddRequest $request)
     {
+       
         try {
-            
+            $id = Auth::user()->id;
             if($request->has('img')) {
                 $file = $request->img;
                 $file_name = $file->getClientOriginalName();
                 $file->move('Calendar_img',$file_name);
                 $addTask = Task::create([
+                    'user_id' => $id,
                     'content' => $request->content,
                     'date' => $request->date,
-                    'img' => 'Calendar_img/' . $file_name
+                    'img' => 'http://127.0.0.1:8000/Calendar_img/' . $file_name
                 ]);
             }
             else {
                 $addTask = Task::create([
+                    'user_id' => $id,
                     'content' => $request->content,
                     'date' => $request->date,
                 ]);
             }
-            return response()->json($addTask);
+            return response()->json(['success' => 'Add successful!']);
         } catch (\Exception $ex) {
             Log::error($ex->getMessage());
             return response()->json(['error' => $ex->getMessage()], 500);
@@ -69,7 +73,7 @@ class CalendarController extends Controller
             $contentUpdate->update([
                 'content' => $request->content,
             ]);
-            return response()->json($contentUpdate);
+            return response()->json(['success' => 'Edit successful!']);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
@@ -79,10 +83,6 @@ class CalendarController extends Controller
         $content = $this->taskRepository->getTaskByID($id);
         try {
             $content->delete();
-            if($content->delete()) 
-            {
-                Storage::delete('274722658_2164756607014895_1166081168313812392_n.jpg');
-            }
             return response()->json(['success' => 'Delete successful!']);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
