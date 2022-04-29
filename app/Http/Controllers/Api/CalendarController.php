@@ -39,13 +39,12 @@ class CalendarController extends Controller
                 $file = $request->img;
                 $fileName = $file->getClientOriginalName();
                 $file->move('CalendarImg',$fileName);
-                $data = [
+                $this->taskRepository->create([
                     'user_id' => $id,
                     'content' => $request->content,
                     'date' => $request->date,
                     'img' => 'http://127.0.0.1:8000/CalendarImg/' . $fileName
-                ];
-                $this->taskRepository->create($data);
+                ]);
             }
             else {
                 $this->taskRepository->create([
