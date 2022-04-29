@@ -90,4 +90,8 @@ class CalendarController extends Controller
         $task = $this->taskRepository->getTaskByUserId($id);
         return response()->json($task);
     }
+    // public function getTaskById($id) {
+    //     $task = $this->taskRepository->getById($id);
+    //     return response()->json($task);
+    // }
 }
