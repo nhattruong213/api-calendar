@@ -10,8 +10,19 @@
         public function getAll(){
             return $this->model->get();
         }
-        public function getTaskByID($id) {
+        public function getById($id) {
             return $this->model->findOrFail($id);
+        }
+        public function deleteById($id) {
+            $detele = $this->getById($id);
+            $detele->delete(); 
+        }
+        public function editById($id, $data) {
+            $detele = $this->getById($id);
+            $detele->update($data); 
+        }
+        public function create($data) {
+            $this->model->create($data); 
         }
     }
 ?>

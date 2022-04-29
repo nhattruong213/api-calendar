@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Storage;
 class CalendarController extends Controller
 {
     protected $taskRepository;
+    protected $task;
 
     public function __construct(TaskRepository $taskRepository)
     {
@@ -27,28 +28,27 @@ class CalendarController extends Controller
      */
     public function index()
     {
-        $dates = $this->taskRepository->getAll();
-        return response()->json($dates);
+        $tasks = $this->taskRepository->getAll();
+        return response()->json($tasks);
     }
-   
     public function store(CalendarAddRequest $request)
     {
-       
         try {
             $id = Auth::user()->id;
             if($request->has('img')) {
                 $file = $request->img;
-                $file_name = $file->getClientOriginalName();
-                $file->move('Calendar_img',$file_name);
-                $addTask = Task::create([
+                $fileName = $file->getClientOriginalName();
+                $file->move('CalendarImg',$fileName);
+                $data = [
                     'user_id' => $id,
                     'content' => $request->content,
                     'date' => $request->date,
-                    'img' => 'http://127.0.0.1:8000/Calendar_img/' . $file_name
-                ]);
+                    'img' => 'http://127.0.0.1:8000/CalendarImg/' . $fileName
+                ];
+                $this->taskRepository->create($data);
             }
             else {
-                $addTask = Task::create([
+                $this->taskRepository->create([
                     'user_id' => $id,
                     'content' => $request->content,
                     'date' => $request->date,
@@ -60,19 +60,18 @@ class CalendarController extends Controller
             return response()->json(['error' => $ex->getMessage()], 500);
         }
     }
-
-    public function show($id)
+    public function show($date)
     {
-        $dates = $this->taskRepository->getTaskByDate($id);
-        return response()->json($dates);
+        $tasks = $this->taskRepository->getTaskByDate($date);
+        return response()->json($tasks);
     }
     public function update(CalendarEditRequest $request, $id)
     {
-        $contentUpdate = $this->taskRepository->getTaskByID($id);
+        $data = [
+            'content' => $request->content
+        ];
         try {
-            $contentUpdate->update([
-                'content' => $request->content,
-            ]);
+            $this->taskRepository->editById($id, $data);
             return response()->json(['success' => 'Edit successful!']);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
@@ -80,12 +79,16 @@ class CalendarController extends Controller
     }
     public function destroy($id)
     {
-        $content = $this->taskRepository->getTaskByID($id);
         try {
-            $content->delete();
+            $this->taskRepository->deleteById($id);
             return response()->json(['success' => 'Delete successful!']);
         } catch (\Exception $ex) {
             return response()->json(['error' => $ex->getMessage()], 500);
         }
+    }
+    public function getTaskByUser() {
+        $id = Auth::user()->id;
+        $task = $this->taskRepository->getTaskByUserId($id);
+        return response()->json($task);
     }
 }

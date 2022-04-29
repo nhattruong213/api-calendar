@@ -27,11 +27,11 @@ Route::group([
 
 });
 
-Route::group(['middleware' => 'auth:api'], function () {
+Route::group(['middleware' => 'auth:api', 'prefix' => 'calendar'], function () {
+    Route::get('/getTaskByUser', [CalendarController::class, 'getTaskByUser']);
     Route::post('/store', [CalendarController::class, 'store'])->name('store');
     Route::put('/edit/{id}', [CalendarController::class, 'update'])->name('update');
     Route::delete('/delete/{id}', [CalendarController::class, 'destroy'])->name('delete');
     Route::get('/get', [CalendarController::class, 'index']);
+    Route::get('/{date}', [CalendarController::class, 'show']);
 });
-
-Route::get('/{id}', [CalendarController::class, 'show']);
