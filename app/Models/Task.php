@@ -15,6 +15,7 @@ class Task extends Model
     public $messeger = 'thành công';
     protected $fillable = [
         'user_id',
+        'event_id',
         'content',
         'date',
         'img',
@@ -22,17 +23,20 @@ class Task extends Model
     public function users(){
         return $this->belongsTo(related: User::class, foreignKey: 'user_id', ownerKey:'id');
     }
-    protected static function boot()
-    {
-        parent::boot();
-        static::created(function ($model) {
-            
-            $email_to = Auth::user()->email;
-            Mail::send('mail',$data =[], function($message) use ($email_to){
-                $message->from('nguyennhattruong11223344@gmail.com', 'thông báo thành công');
-                $message->to($email_to, $email_to);
-                $message->subject('Thông báo thành công ');
-            });
-        });
+    public function events(){
+        return $this->belongsTo(related: Event::class, foreignKey: 'event_id', ownerKey:'id');
     }
+    // protected static function boot()
+    // {
+    //     parent::boot();
+    //     static::created(function ($model) {
+            
+    //         $email_to = Auth::user()->email;
+    //         Mail::send('mail',$data =[], function($message) use ($email_to){
+    //             $message->from('nguyennhattruong11223344@gmail.com', 'thông báo thành công');
+    //             $message->to($email_to, $email_to);
+    //             $message->subject('Thông báo thành công ');
+    //         });
+    //     });
+    // }
 }

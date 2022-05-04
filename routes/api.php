@@ -36,3 +36,4 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'calendar'], function () {
     Route::get('/get', [CalendarController::class, 'index']);
     Route::get('/{date}', [CalendarController::class, 'show']);
 });
+Route::get('/getEvent', [CalendarController::class, 'getEvent']);

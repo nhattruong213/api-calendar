@@ -24,9 +24,18 @@ class CalendarAddRequest extends FormRequest
     public function rules()
     {
         return [
+            'event_id' => 'required',
             'date' => 'required',
             'content' => 'required',
             'img' => 'mimes:jpg,png'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'event_id.required' => 'Please select type job',
+            'content.required'  => 'Please Enter content',
+            'date.required'  => 'Please Enter date',
         ];
     }
 }

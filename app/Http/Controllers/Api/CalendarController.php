@@ -41,6 +41,7 @@ class CalendarController extends Controller
                 $file->move('CalendarImg',$fileName);
                 $this->taskRepository->create([
                     'user_id' => $id,
+                    'event_id' => $request->event_id,
                     'content' => $request->content,
                     'date' => $request->date,
                     'img' => 'http://127.0.0.1:8000/CalendarImg/' . $fileName
@@ -49,6 +50,7 @@ class CalendarController extends Controller
             else {
                 $this->taskRepository->create([
                     'user_id' => $id,
+                    'event_id' => $request->event_id,
                     'content' => $request->content,
                     'date' => $request->date,
                 ]);
@@ -67,6 +69,7 @@ class CalendarController extends Controller
     public function update(CalendarEditRequest $request, $id)
     {
         $data = [
+            'event_id' => $request->event_id,
             'content' => $request->content
         ];
         try {
@@ -90,8 +93,8 @@ class CalendarController extends Controller
         $task = $this->taskRepository->getTaskByUserId($id);
         return response()->json($task);
     }
-    // public function getTaskById($id) {
-    //     $task = $this->taskRepository->getById($id);
-    //     return response()->json($task);
-    // }
+    public function getEvent() {
+        $task = $this->taskRepository->getEvent();
+        return response()->json($task);
+    }
 }

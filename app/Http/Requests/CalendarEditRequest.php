@@ -24,7 +24,15 @@ class CalendarEditRequest extends FormRequest
     public function rules()
     {
         return [
+            'event_id' => 'required',
             'content' => 'required'
+        ];
+    }
+    public function messages()
+    {
+        return [
+            'event_id.required' => 'Please select type job',
+            'content.required'  => 'Please Enter content',
         ];
     }
 }

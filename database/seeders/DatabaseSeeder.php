@@ -15,25 +15,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        // \App\Models\User::factory(10)->create();
+        \App\Models\User::factory(10)->create();
+        DB::table('events')->insert([
+            [
+                'type'=> 'Nhà',
+                'color' => '#167e56'
+            ],
+            [
+                'type'=> 'Cơ quan',
+                'color' => 'red'
+            ],
+        ]);
+
         DB::table('tasks')->insert([ 
             [
                 'user_id' => 1,
+                'event_id' => 1,
                 'content' => 'Đá bóng',
                 'date' => 'Fri Apr 15 2022'
             ],
             [   
                 'user_id' => 1,
+                'event_id' => 1,
                 'content' => 'Xem phim',
                 'date' => 'Fri Apr 15 2022'
             ],
             [
                 'user_id' => 1,
+                'event_id' => 2,
                 'content' => 'Đá bóng',
                 'date' => 'Tue Apr 19 2022'
             ],
             [ 
-                'user_id' => 1,  
+                'user_id' => 1,
+                'event_id' => 2,  
                 'content' => 'Xem phim',
                 'date' => 'Tue Apr 19 2022'
             ],
